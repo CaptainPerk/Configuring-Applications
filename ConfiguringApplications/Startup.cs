@@ -15,7 +15,7 @@ namespace ConfiguringApplications
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMvcWithDefaultRoute();
+            app.UseMiddleware<ContentMiddleware>();
         }
     }
 }
