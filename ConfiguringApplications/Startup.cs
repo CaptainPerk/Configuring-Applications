@@ -15,10 +15,15 @@ namespace ConfiguringApplications
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMiddleware<ErrorMiddleware>();
-            app.UseMiddleware<BrowserTypeMiddleware>();
-            app.UseMiddleware<ShortCircuitMiddleware>();
-            app.UseMiddleware<ContentMiddleware>();
+            if (env.IsDevelopment())
+            {
+                app.UseMiddleware<ErrorMiddleware>();
+                app.UseMiddleware<BrowserTypeMiddleware>();
+                app.UseMiddleware<ShortCircuitMiddleware>();
+                app.UseMiddleware<ContentMiddleware>();
+            }
+
+            app.UseMvc(routes => routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"));
         }
     }
 }
