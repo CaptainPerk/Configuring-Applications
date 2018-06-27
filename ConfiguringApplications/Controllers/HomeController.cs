@@ -1,5 +1,6 @@
 ﻿using ConfiguringApplications.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace ConfiguringApplications.Controllers
@@ -13,10 +14,23 @@ namespace ConfiguringApplications.Controllers
             _uptimeService = uptimeService;
         }
 
-        public ViewResult Index() => View(new Dictionary<string, string>()
+        public ViewResult Index(bool throwException = false)
         {
-            ["Message"] = "This is the Index Action",
-            ["Uptime"] = $"{_uptimeService.Uptime}ms"
+            if (throwException)
+            {
+                throw new NullReferenceException();    
+            }
+
+            return View(new Dictionary<string, string>
+            {
+                ["Message"] = "This is the Index Action",
+                ["Uptime"] = $"{_uptimeService.Uptime}ms"
+            });
+        }
+
+        public ViewResult Error() => View(nameof(Index), new Dictionary<string, string>
+        {
+            ["Message"] = "This is the Error Action"
         });
     }
 }
