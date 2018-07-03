@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using System.IO;
 
 namespace ConfiguringApplications
@@ -15,6 +16,12 @@ namespace ConfiguringApplications
             return new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
+                    if (args != null) config.AddCommandLine(args);
+                })
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
